@@ -14,5 +14,6 @@ import java.util.List;
 @Service
 public interface BinancePriceService
 {
-    public List<BinancePriceDTO> getBinancePrices();
+    public List<BinancePriceDTO> getBinanceBTCEurPrice();
+    public List<BinancePriceDTO> getBinanceBTCUSDPrice();
 }

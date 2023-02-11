@@ -13,7 +13,9 @@ import lombok.Setter;
 @Getter
 public enum BinanceEnum
 {
-    GET_PRICES("https://api.binance.com/api/v3/ticker/price");
+    GET_PRICES("https://api.binance.com/api/v3/ticker/price"),
+    GET_EURO_PRICE("https://api.binance.com/api/v3/ticker/price?symbol=BTCEUR"),
+    GET_USD_PRICE("https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT");
 
     private final String value;
 
