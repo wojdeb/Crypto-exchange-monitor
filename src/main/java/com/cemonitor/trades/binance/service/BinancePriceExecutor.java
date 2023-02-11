@@ -22,11 +22,13 @@ public class BinancePriceExecutor
     @Autowired
     private BinancePriceService binancePriceService;
 
-//    @Scheduled(initialDelay = 1000 * 30, fixedDelay=Long.MAX_VALUE)
     @Scheduled(fixedDelay = 5000)
     private void executor()
     {
-        List<BinancePriceDTO> binancePriceDTOS = binancePriceService.getBinancePrices();
-        binancePriceDTOS.forEach(s -> log.debug(s.toString()));
+        List<BinancePriceDTO> binanceEurPriceDTOS = binancePriceService.getBinanceBTCEurPrice();
+        binanceEurPriceDTOS.forEach(s -> log.debug(s.toString()));
+
+        List<BinancePriceDTO> binanceUsdPriceDTOS = binancePriceService.getBinanceBTCUSDPrice();
+        binanceUsdPriceDTOS.forEach(s -> log.debug(s.toString()));
     }
 }

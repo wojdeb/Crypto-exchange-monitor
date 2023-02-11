@@ -23,14 +23,35 @@ import java.util.List;
 public class BinancePriceServiceImpl implements BinancePriceService
 {
     @Override
-    public List<BinancePriceDTO> getBinancePrices()
-    {
-        log.debug("Retrieving prices from Binance....");
+    public List<BinancePriceDTO> getBinanceBTCEurPrice() {
+        log.debug("Retrieving BTC <-> EUR price from Binance....");
 
         try
         {
             RestTemplate restTemplate = new RestTemplate();
-            ResponseEntity<BinancePriceDTO[]> response = restTemplate.getForEntity(BinanceEnum.GET_PRICES.getValue(), BinancePriceDTO[].class);
+            ResponseEntity<BinancePriceDTO> response = restTemplate.getForEntity(BinanceEnum.GET_EURO_PRICE.getValue(), BinancePriceDTO.class);
+
+            log.debug("Prices retrieved successfully from Binance.");
+
+            return Arrays.asList(response.getBody());
+        }
+        catch (Exception e)
+        {
+            log.error(String.format("Cannot retrieve prices from Binance - %s", e.getStackTrace()));
+        }
+
+        return Collections.emptyList();
+    }
+
+    @Override
+    public List<BinancePriceDTO> getBinanceBTCUSDPrice() {
+
+        log.debug("Retrieving BTC <-> USD price from Binance....");
+
+        try
+        {
+            RestTemplate restTemplate = new RestTemplate();
+            ResponseEntity<BinancePriceDTO> response = restTemplate.getForEntity(BinanceEnum.GET_USD_PRICE.getValue(), BinancePriceDTO.class);
 
             log.debug("Prices retrieved successfully from Binance.");
 
