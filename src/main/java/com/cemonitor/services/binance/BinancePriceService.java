@@ -1,4 +1,4 @@
-package com.cemonitor.trades.binance.service;
+package com.cemonitor.services.binance;
 
 import com.cemonitor.trades.binance.dto.BinancePriceDTO;
 import org.springframework.stereotype.Service;

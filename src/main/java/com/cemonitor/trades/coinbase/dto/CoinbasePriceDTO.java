@@ -20,7 +20,7 @@ public class CoinbasePriceDTO {
     @Override
     public String toString()
     {
-        return "BinancePriceDTO" +
+        return "CoinbasePriceDTO" +
                 "{" +
                 "symbol='" + base + '\'' +
                 "currency='" + currency + '\'' +
