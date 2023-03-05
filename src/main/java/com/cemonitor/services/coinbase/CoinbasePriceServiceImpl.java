@@ -1,4 +1,4 @@
-package com.cemonitor.trades.coinbase.service;
+package com.cemonitor.services.coinbase;
 
 import com.cemonitor.trades.coinbase.dto.DataDTO;
 import com.cemonitor.trades.coinbase.enums.CoinbaseEnum;
@@ -21,13 +21,9 @@ public class CoinbasePriceServiceImpl implements CoinbasePriceService {
 
     @Override
     public List<DataDTO> getCoinbaseEuroPrice() {
-        log.debug("Retrieving Euro price from Coinbase...");
-
         try {
             RestTemplate restTemplate = new RestTemplate();
             ResponseEntity<DataDTO> response = restTemplate.getForEntity(CoinbaseEnum.GET_EURO_PRICE.getValue(), DataDTO.class);
-
-            log.debug("Prices retrieved successfully from Coinbase.");
 
             return Arrays.asList(response.getBody());
         }
@@ -40,13 +36,9 @@ public class CoinbasePriceServiceImpl implements CoinbasePriceService {
 
     @Override
     public List<DataDTO> getCoinbaseUSDPrice() {
-        log.debug("Retrieving USD price from Coinbase...");
-
         try {
             RestTemplate restTemplate = new RestTemplate();
             ResponseEntity<DataDTO> response = restTemplate.getForEntity(CoinbaseEnum.GET_USD_PRICE.getValue(), DataDTO.class);
-
-            log.debug("Prices retrieved successfully from Coinbase.");
 
             return Arrays.asList(response.getBody());
         }

@@ -1,4 +1,4 @@
-package com.cemonitor.trades.coinbase.service;
+package com.cemonitor.services.coinbase;
 
 import com.cemonitor.trades.coinbase.dto.DataDTO;
 

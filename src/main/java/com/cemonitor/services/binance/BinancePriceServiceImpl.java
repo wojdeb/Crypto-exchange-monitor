@@ -1,4 +1,4 @@
-package com.cemonitor.trades.binance.service;
+package com.cemonitor.services.binance;
 
 import com.cemonitor.trades.binance.dto.BinancePriceDTO;
 import com.cemonitor.trades.binance.enums.BinanceEnum;
@@ -7,7 +7,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import javax.annotation.PostConstruct;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -24,14 +23,10 @@ public class BinancePriceServiceImpl implements BinancePriceService
 {
     @Override
     public List<BinancePriceDTO> getBinanceBTCEurPrice() {
-        log.debug("Retrieving BTC <-> EUR price from Binance....");
-
         try
         {
             RestTemplate restTemplate = new RestTemplate();
             ResponseEntity<BinancePriceDTO> response = restTemplate.getForEntity(BinanceEnum.GET_EURO_PRICE.getValue(), BinancePriceDTO.class);
-
-            log.debug("Prices retrieved successfully from Binance.");
 
             return Arrays.asList(response.getBody());
         }
@@ -45,15 +40,10 @@ public class BinancePriceServiceImpl implements BinancePriceService
 
     @Override
     public List<BinancePriceDTO> getBinanceBTCUSDPrice() {
-
-        log.debug("Retrieving BTC <-> USD price from Binance....");
-
         try
         {
             RestTemplate restTemplate = new RestTemplate();
             ResponseEntity<BinancePriceDTO> response = restTemplate.getForEntity(BinanceEnum.GET_USD_PRICE.getValue(), BinancePriceDTO.class);
-
-            log.debug("Prices retrieved successfully from Binance.");
 
             return Arrays.asList(response.getBody());
         }
