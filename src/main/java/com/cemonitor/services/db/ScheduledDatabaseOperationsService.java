@@ -7,10 +7,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
@@ -26,13 +23,13 @@ public class ScheduledDatabaseOperationsService implements CommandLineRunner {
     private final LivePricesRepository livePricesRepository;
     private final HourStatisticsRepository hourStatisticsRepository;
     private static ScheduledExecutorService executor = Executors.newScheduledThreadPool(2);
-    private HourlyStatisticsCalculationService hourlyService;
+    private HourStatisticsCalculationService hourService;
 
 
     public ScheduledDatabaseOperationsService(LivePricesRepository livePricesRepository, HourStatisticsRepository hourStatisticsRepository) {
         this.livePricesRepository = livePricesRepository;
         this.hourStatisticsRepository = hourStatisticsRepository;
-        hourlyService = new HourlyStatisticsCalculationService(livePricesRepository, hourStatisticsRepository);
+        hourService = new HourStatisticsCalculationService(livePricesRepository, hourStatisticsRepository);
     }
 
     @Override
@@ -41,7 +38,7 @@ public class ScheduledDatabaseOperationsService implements CommandLineRunner {
 
         ScheduledFuture<?> task = executor.scheduleAtFixedRate(new Runnable() {
             public void run() {
-                hourlyService.run();
+                hourService.run();
                 log.info("Removing all records in LivePrices database...");
                 livePricesRepository.deleteAll();
 

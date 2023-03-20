@@ -7,14 +7,12 @@ import com.cemonitor.repositories.LivePricesRepository;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * @author Wojciech Dębski
@@ -23,25 +21,26 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @AllArgsConstructor
-public class HourlyStatisticsCalculationService {
+@Service
+public class HourStatisticsCalculationService {
     private LivePricesRepository livePricesRepository;
     private HourStatisticsRepository hourStatisticsRepository;
 
     private double calculateAverage(String exchange, String currencyPair) {
         List<LivePrices> prices = livePricesRepository.findAllByExchangeAndCurrencyPair(exchange, currencyPair);
 
-        return prices.stream().mapToDouble(i -> i.getPrice()).sum() / prices.size();
+        return prices.stream().mapToDouble(LivePrices::getPrice).sum() / prices.size();
     }
 
-    private double calculateHighestSpread(String baseExchange, String competiveExchange, String currencyPair) {
+    private double calculateHighestSpread(String baseExchange, String competitiveExchange, String currencyPair) {
         List<LivePrices> basePrices = livePricesRepository.findAllByExchangeAndCurrencyPair(baseExchange, currencyPair);
-        List<LivePrices> competivePrices = livePricesRepository.findAllByExchangeAndCurrencyPair(competiveExchange, currencyPair);
+        List<LivePrices> competitivePrices = livePricesRepository.findAllByExchangeAndCurrencyPair(competitiveExchange, currencyPair);
         double highestSpread = 0;
 
         log.info("Calculating highest spread per hour...");
 
         for(int i = 0; i < basePrices.size(); i++) {
-            double spread = basePrices.get(i).getPrice() - competivePrices.get(i).getPrice();
+            double spread = basePrices.get(i).getPrice() - competitivePrices.get(i).getPrice();
 
             if(spread > highestSpread)
             highestSpread = spread;
