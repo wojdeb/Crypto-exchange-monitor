@@ -37,12 +37,10 @@ public class ScheduledDatabaseOperationsService implements CommandLineRunner {
     public void run(String... args) throws Exception {
         log.info("Scheduled operations service started!");
 
-        ScheduledFuture<?> task = executor.scheduleAtFixedRate(new Runnable() {
-            public void run() {
-                hourService.run();
-                log.info("Removing all records in LivePrices database...");
-                livePricesRepository.deleteAll();
-            }
+        ScheduledFuture<?> task = executor.scheduleAtFixedRate(() -> {
+            hourService.run();
+            log.info("Removing all records in LivePrices database...");
+            livePricesRepository.deleteAll();
         }, TimeUnit.HOURS.toSeconds(1), TimeUnit.HOURS.toSeconds(1), TimeUnit.SECONDS);
     }
 }
