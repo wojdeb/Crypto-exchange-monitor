@@ -5,6 +5,7 @@ import com.cemonitor.repositories.LivePricesRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.concurrent.Executors;
@@ -18,7 +19,7 @@ import java.util.concurrent.TimeUnit;
  **/
 
 @Slf4j
-@Component
+@Service
 public class ScheduledDatabaseOperationsService implements CommandLineRunner {
     private final LivePricesRepository livePricesRepository;
     private final HourStatisticsRepository hourStatisticsRepository;
@@ -36,18 +37,10 @@ public class ScheduledDatabaseOperationsService implements CommandLineRunner {
     public void run(String... args) throws Exception {
         log.info("Scheduled operations service started!");
 
-        ScheduledFuture<?> task = executor.scheduleAtFixedRate(new Runnable() {
-            public void run() {
-                hourService.run();
-                log.info("Removing all records in LivePrices database...");
-                livePricesRepository.deleteAll();
-
-                //TODO: temporary solution - first 4 records are added just after running application, so they contains null values because livePricesRepository were empty when thread was executed.
-                if(hourStatisticsRepository.existsById(1L)) {
-                    log.info("Removing first 4 records (with null values)");
-                    hourStatisticsRepository.deleteAllById(Arrays.asList(1L, 2L, 3L, 4L));
-                }
-            }
-        }, 0, 60, TimeUnit.MINUTES);
+        ScheduledFuture<?> task = executor.scheduleAtFixedRate(() -> {
+            hourService.run();
+            log.info("Removing all records in LivePrices database...");
+            livePricesRepository.deleteAll();
+        }, TimeUnit.HOURS.toSeconds(1), TimeUnit.HOURS.toSeconds(1), TimeUnit.SECONDS);
     }
 }
