@@ -22,7 +22,7 @@ import javax.persistence.Id;
 @Setter
 @Builder
 @Entity
-public class HourStatistics {
+public class HourStatisticsEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long Id;

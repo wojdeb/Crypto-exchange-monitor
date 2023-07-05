@@ -2,6 +2,7 @@ package com.cemonitor.services.db;
 
 import com.cemonitor.repositories.HourStatisticsRepository;
 import com.cemonitor.repositories.LivePricesRepository;
+import com.cemonitor.websocket.DataWebSocketHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;

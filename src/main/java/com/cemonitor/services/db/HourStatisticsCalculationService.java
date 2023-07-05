@@ -1,11 +1,12 @@
 package com.cemonitor.services.db;
 
-import com.cemonitor.model.HourStatistics;
+import com.cemonitor.model.HourStatisticsEntity;
 import com.cemonitor.model.LivePrices;
 import com.cemonitor.repositories.HourStatisticsRepository;
 import com.cemonitor.repositories.LivePricesRepository;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -49,20 +50,20 @@ public class HourStatisticsCalculationService {
         return highestSpread;
     }
 
-    private List<HourStatistics> createHourStatisticsEntities() {
+    private List<HourStatisticsEntity> createHourStatisticsEntities() {
         String timestamp = new Timestamp(System.currentTimeMillis()).toString();
 
         List<String> exchanges = Arrays.asList("Binance", "Coinbase");
         List<String> currencyPairs = Arrays.asList("BTCEUR", "BTCUSDT");
 
-        List<HourStatistics> entities = new ArrayList<>();
+        List<HourStatisticsEntity> entities = new ArrayList<>();
 
         for (String exchange : exchanges) {
             for (String currencyPair : currencyPairs) {
                 double average = calculateAverage(exchange, currencyPair);
                 double highestSpread = calculateHighestSpread(exchange, getOtherExchange(exchange), currencyPair);
 
-                HourStatistics entity = HourStatistics.builder()
+                HourStatisticsEntity entity = HourStatisticsEntity.builder()
                         .timestamp(timestamp)
                         .currencyPair(currencyPair)
                         .exchange(exchange)
@@ -77,17 +78,23 @@ public class HourStatisticsCalculationService {
         return entities;
     }
 
+    private String mapEntityToJson(HourStatisticsEntity hourStatisticsEntity) throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        return objectMapper.writeValueAsString(hourStatisticsEntity);
+    }
+
     private String getOtherExchange(String exchange) {
         return exchange.equals("Binance") ? "Coinbase" : "Binance";
     }
 
 
     public void run() {
-        List<HourStatistics> hourStatisticsEntities = createHourStatisticsEntities();
+        List<HourStatisticsEntity> statisticsEntities = createHourStatisticsEntities();
 
         log.info("Saving hour statistics in database...");
 
-        for(HourStatistics entity : hourStatisticsEntities) {
+        for(HourStatisticsEntity entity : statisticsEntities) {
             hourStatisticsRepository.save(entity);
         }
     }
