@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{style.css}" />
+    <title>CEM - Crypto Exchange Monitor</title>
+</head>
+<body>
+<h1 th:text="${pageTitle}">pageTitle</h1>
+<p th:text="${pageContent}">pageContent</p>
+
+<h1>DANE Z WEBSOCKETU:</h1>
+<div id="websocketData"></div>
+
+
+<!-- TEMPORARY SOLUTION - JUST TO CHECK IF DATA ARE ADDED FROM DB TO WEBSOCKET AND CAN BE SEND TO FRONTEND -->
+<script>
+    var socket = new WebSocket("ws://localhost:8080/websocket");
+
+    socket.onmessage = function(event) {
+        var websocketDataElement = document.getElementById("websocketData");
+        websocketDataElement.innerHTML += event.data;
+    };
+</script>
+
+</body>
+</html>

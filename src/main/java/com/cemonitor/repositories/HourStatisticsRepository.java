@@ -1,6 +1,6 @@
 package com.cemonitor.repositories;
 
-import com.cemonitor.model.HourStatistics;
+import com.cemonitor.model.HourStatisticsEntity;
 import org.springframework.data.repository.CrudRepository;
 
 /**
@@ -8,5 +8,5 @@ import org.springframework.data.repository.CrudRepository;
  * @date 17/03/2023
  **/
 
-public interface HourStatisticsRepository extends CrudRepository<HourStatistics, Long> {
+public interface HourStatisticsRepository extends CrudRepository<HourStatisticsEntity, Long> {
 }
