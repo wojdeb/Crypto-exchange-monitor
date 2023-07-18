@@ -31,7 +31,7 @@ public class BinancePriceExecutor
         this.livePricesRepository = livePricesRepository;
     }
 
-    @Scheduled(fixedDelay = 5000)
+    @Scheduled(fixedDelay = 1000)
     private void executor() {
         List<BinancePriceDTO> binanceEurPriceDTOS = binancePriceService.getBinanceBTCEurPrice();
         List<BinancePriceDTO> binanceUsdPriceDTOS = binancePriceService.getBinanceBTCUSDPrice();

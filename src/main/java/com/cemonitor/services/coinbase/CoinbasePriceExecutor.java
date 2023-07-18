@@ -30,7 +30,7 @@ public class CoinbasePriceExecutor {
         this.livePricesRepository = livePricesRepository;
     }
 
-    @Scheduled(fixedDelay = 5000)
+    @Scheduled(fixedDelay = 1000)
     private void executor() {
         List<DataDTO> coinbaseUSDPriceDTOS = coinbasePriceService.getCoinbaseUSDPrice();
         List<DataDTO> coinbaseEURPriceDTOS = coinbasePriceService.getCoinbaseEuroPrice();
