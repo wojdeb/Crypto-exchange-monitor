@@ -72,7 +72,7 @@ public class WebSocketService implements CommandLineRunner {
         return jsonList;
     }
 
-    @Scheduled(fixedRate = 5000)
+    @Scheduled(fixedRate = 1000)
     public void sendDataToClientsPeriodically() {
         List<String> jsonList = createEntities();
         log.info("Results: {}", jsonList);

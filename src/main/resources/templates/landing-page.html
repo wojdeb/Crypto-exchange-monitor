@@ -10,17 +10,29 @@
 <p th:text="${pageContent}">pageContent</p>
 
 <h1>DANE Z WEBSOCKETU:</h1>
-<div id="websocketData"></div>
+<div id="websocketData">
+    <b>BTC-EUR | Binance: </b> <div id="BTCEUR_Binance"></div> </br >
+    <b>BTC-EUR | Coinbase: </b> <div id="BTCEUR_Coinbase"></div> </br >
+    <b>BTC-USDT | Binance: </b> <div id="BTCUSDT_Binance"></div> </br >
+    <b>BTC-USDT | Coinbase: </b><div id="BTCUSDT_Coinbase"></div> </br >
+</div>
 
 
 <!-- TEMPORARY SOLUTION - JUST TO CHECK IF DATA ARE ADDED FROM DB TO WEBSOCKET AND CAN BE SEND TO FRONTEND -->
 <script>
-    var socket = new WebSocket("ws://localhost:8080/websocket");
+var socket = new WebSocket("ws://localhost:8080/websocket");
 
-    socket.onmessage = function(event) {
-        var websocketDataElement = document.getElementById("websocketData");
-        websocketDataElement.innerHTML += event.data;
-    };
+socket.onmessage = function(event) {
+    var websocketDataElement = document.getElementById("websocketData");
+    var eventData = JSON.parse(event.data);
+    var currencyPair = eventData.currencyPair;
+    var exchange = eventData.exchange;
+    var price = eventData.price;
+
+    document.getElementById(currencyPair + "_" + exchange).innerHTML = "";
+
+    document.getElementById(currencyPair + "_" + exchange).innerHTML = price;
+};
 </script>
 
 </body>
